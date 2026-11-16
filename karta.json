@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-16T14:28:03Z",
+ "generated_at": "2026-11-16T15:03:19Z",
  "owner": "rtynbirf",
  "source": "api.github.com/user/repos (живые данные, тип all)",
  "rule": "ни одного выдуманного числа",
@@ -10,23 +10,83 @@
   "forks": 1,
   "undecoded": 6,
   "named_clusters": 9,
-  "commits_total": 5439,
-  "commits_live": 2608,
-  "size_kb": 1333489
+  "commits_total": 5450,
+  "commits_live": 2619,
+  "size_kb": 1333651
  },
  "repos": [
+  {
+   "name": "release-vault",
+   "private": false,
+   "fork": false,
+   "archived": false,
+   "size_kb": 4389,
+   "commits": 63,
+   "created_at": "2026-11-07T13:15:09Z",
+   "pushed_at": "2026-11-16T15:01:11Z",
+   "language": "Python",
+   "description": "release-vault — Шифрованное хранилище релизных ассетов",
+   "cluster": "РЕВО·ЭКСПОЗИЦИИ",
+   "status": "ЖИВОЙ",
+   "lfs": false
+  },
+  {
+   "name": "lex-naturae",
+   "private": false,
+   "fork": false,
+   "archived": false,
+   "size_kb": 182,
+   "commits": 10,
+   "created_at": "2026-11-16T09:14:49Z",
+   "pushed_at": "2026-11-16T14:48:12Z",
+   "language": "Python",
+   "description": "Lex Naturae — claim/evidence ledger. Separates observations from hypotheses, philosophical principles and institutional rules. Machine-verifiable: CSV cell extraction, excerpt verification, SHA-256 artifact integrity, unit ranges, graph conflict detection. v0.7 — audited by Z.ai, 70/70 tests, BOM-tolerant.",
+   "cluster": "ДОКТРИНА·КАНОН",
+   "status": "ЖИВОЙ",
+   "lfs": false
+  },
   {
    "name": "khozyain",
    "private": false,
    "fork": false,
    "archived": false,
    "size_kb": 485,
-   "commits": 55,
+   "commits": 59,
    "created_at": "2026-11-10T20:39:31Z",
-   "pushed_at": "2026-11-16T14:10:08Z",
+   "pushed_at": "2026-11-16T14:45:00Z",
    "language": "Python",
    "description": "ХОЗЯИН ДОМА — аккаунт-уровневый автомат состояния: зелёные main, живые триггеры, ноль открытых состояний и ноль уведомлений. Слой 3 дома поверх repo-doctrine и domovoy-ritual",
    "cluster": "ЯДРО·ДЕКЛАРАЦИИ",
+   "status": "ЖИВОЙ",
+   "lfs": false
+  },
+  {
+   "name": "rtynbirf",
+   "private": false,
+   "fork": false,
+   "archived": false,
+   "size_kb": 11093,
+   "commits": 241,
+   "created_at": "2026-11-07T22:18:59Z",
+   "pushed_at": "2026-11-16T14:29:13Z",
+   "language": "Python",
+   "description": "ЧЕЛОВЕК=АККАУНТ=PID1 · ПОЛИМАТ=МУЛЬТИАГЕНТ · живая кузня: рой агентов, офлайн-вселенная, ни одного стороннего виджета",
+   "cluster": "АККАУНТ-ОБОЛОЧКА",
+   "status": "ЖИВОЙ",
+   "lfs": false
+  },
+  {
+   "name": "karta",
+   "private": false,
+   "fork": false,
+   "archived": false,
+   "size_kb": 26,
+   "commits": 4,
+   "created_at": "2026-11-16T12:22:36Z",
+   "pushed_at": "2026-11-16T14:28:34Z",
+   "language": "Python",
+   "description": "КАРТА ВСЕЛЕННОЙ rtynbirf: генерируется из живых данных API, ни одного выдуманного числа. СВЕРКА = CRITIC: расхождение карты с территорией ловится, а не прячется. Ритуалы: СВЕРКА / ВЫЖИВАНИЕ / НОЧЬ-БЕЗ-СЕТИ.",
+   "cluster": "НЕРАЗДЕКОДИРОВАН",
    "status": "ЖИВОЙ",
    "lfs": false
   },
@@ -35,7 +95,7 @@
    "private": false,
    "fork": false,
    "archived": false,
-   "size_kb": 496,
+   "size_kb": 573,
    "commits": 147,
    "created_at": "2026-11-11T08:46:00Z",
    "pushed_at": "2026-11-16T14:10:01Z",
@@ -95,7 +155,7 @@
    "private": false,
    "fork": false,
    "archived": false,
-   "size_kb": 7030,
+   "size_kb": 7108,
    "commits": 232,
    "created_at": "2026-10-16T09:35:30Z",
    "pushed_at": "2026-11-16T13:43:24Z",
@@ -110,7 +170,7 @@
    "private": false,
    "fork": false,
    "archived": false,
-   "size_kb": 166975,
+   "size_kb": 166980,
    "commits": 101,
    "created_at": "2026-10-26T09:00:00Z",
    "pushed_at": "2026-11-16T13:41:36Z",
@@ -125,7 +185,7 @@
    "private": false,
    "fork": false,
    "archived": false,
-   "size_kb": 3485,
+   "size_kb": 3487,
    "commits": 36,
    "created_at": "2026-11-07T17:35:42Z",
    "pushed_at": "2026-11-16T13:41:23Z",
@@ -147,21 +207,6 @@
    "language": "HTML",
    "description": "СИНГУЛЯР — офлайн-вселенная караоке RUVSON: 64 песни · 197 языков (цель 200) · ОРКЕСТРАТОР ·15 · хаб + 52 двери · PWA (офлайн, без слежки)",
    "cluster": "SINGULYAR",
-   "status": "ЖИВОЙ",
-   "lfs": false
-  },
-  {
-   "name": "rtynbirf",
-   "private": false,
-   "fork": false,
-   "archived": false,
-   "size_kb": 11093,
-   "commits": 239,
-   "created_at": "2026-11-07T22:18:59Z",
-   "pushed_at": "2026-11-16T13:23:32Z",
-   "language": "Python",
-   "description": "ЧЕЛОВЕК=АККАУНТ=PID1 · ПОЛИМАТ=МУЛЬТИАГЕНТ · живая кузня: рой агентов, офлайн-вселенная, ни одного стороннего виджета",
-   "cluster": "АККАУНТ-ОБОЛОЧКА",
    "status": "ЖИВОЙ",
    "lfs": false
   },
@@ -191,21 +236,6 @@
    "pushed_at": "2026-11-16T12:50:17Z",
    "language": "Python",
    "description": "REVO — автономный прототип метода Reve: layout → render",
-   "cluster": "РЕВО·ЭКСПОЗИЦИИ",
-   "status": "ЖИВОЙ",
-   "lfs": false
-  },
-  {
-   "name": "release-vault",
-   "private": false,
-   "fork": false,
-   "archived": false,
-   "size_kb": 4389,
-   "commits": 63,
-   "created_at": "2026-11-07T13:15:09Z",
-   "pushed_at": "2026-11-16T12:46:04Z",
-   "language": "Python",
-   "description": "release-vault — Шифрованное хранилище релизных ассетов",
    "cluster": "РЕВО·ЭКСПОЗИЦИИ",
    "status": "ЖИВОЙ",
    "lfs": false
@@ -271,21 +301,6 @@
    "lfs": false
   },
   {
-   "name": "karta",
-   "private": false,
-   "fork": false,
-   "archived": false,
-   "size_kb": 26,
-   "commits": 1,
-   "created_at": "2026-11-16T12:22:36Z",
-   "pushed_at": "2026-11-16T12:22:42Z",
-   "language": "Python",
-   "description": "КАРТА ВСЕЛЕННОЙ rtynbirf: генерируется из живых данных API, ни одного выдуманного числа. СВЕРКА = CRITIC: расхождение карты с территорией ловится, а не прячется. Ритуалы: СВЕРКА / ВЫЖИВАНИЕ / НОЧЬ-БЕЗ-СЕТИ.",
-   "cluster": "НЕРАЗДЕКОДИРОВАН",
-   "status": "ЖИВОЙ",
-   "lfs": false
-  },
-  {
    "name": "singulyar-a0-audit",
    "private": false,
    "fork": false,
@@ -296,21 +311,6 @@
    "pushed_at": "2026-11-16T10:59:42Z",
    "language": "Python",
    "description": "SINGULYAR × A0 — independent audit (PACKAGE VALID + BRIDGE VALID) and R4 port design",
-   "cluster": "ДОКТРИНА·КАНОН",
-   "status": "ЖИВОЙ",
-   "lfs": false
-  },
-  {
-   "name": "lex-naturae",
-   "private": false,
-   "fork": false,
-   "archived": false,
-   "size_kb": 182,
-   "commits": 8,
-   "created_at": "2026-11-16T09:14:49Z",
-   "pushed_at": "2026-11-16T10:59:34Z",
-   "language": "Python",
-   "description": "Lex Naturae — claim/evidence ledger. Separates observations from hypotheses, philosophical principles and institutional rules. Machine-verifiable: CSV cell extraction, excerpt verification, SHA-256 artifact integrity, unit ranges, graph conflict detection. v0.7 — audited by Z.ai, 70/70 tests, BOM-tolerant.",
    "cluster": "ДОКТРИНА·КАНОН",
    "status": "ЖИВОЙ",
    "lfs": false
@@ -1077,9 +1077,9 @@
   {
    "заявка": "2939 коммитов",
    "заявлено": "2939",
-   "живое": "5439",
+   "живое": "5450",
    "статус": "RASSINHRON",
-   "примечание": "расхождение +2500; прошлая карта либо устарела, либо считала иначе"
+   "примечание": "расхождение +2511; прошлая карта либо устарела, либо считала иначе"
   },
   {
    "заявка": "2308 коммитов за ноябрь 2026",
@@ -1105,9 +1105,9 @@
   {
    "заявка": "офлайн живёт (девиз)",
    "заявлено": "—",
-   "живое": "зеркало 69/70 создано 2026-11-16, sha256-манифест подписан",
+   "живое": "зеркало 70/70 создано 2026-11-16, sha256-манифест подписан",
    "статус": "PARTIALLY SUPPORTED",
-   "примечание": "копия существует, но пока на стороне генератора; SUPPORTED после вывоза хозяином на офлайн-диск; зеркало отстаёт на 1 комнат(у) — появились после зеркала, вывозить заново"
+   "примечание": "копия доведена до сейфа дома (release-vault backup/zerkalo-70-2026-11-16) и выжила бы смерть тела; SUPPORTED после вывоза хозяином на офлайн-диск (вне монокультуры вендора)"
   }
  ],
  "lfs_gaps": [
