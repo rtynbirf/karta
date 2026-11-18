@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="banner.png" width="100%" alt="штандарт karta" />
+  <img src="https://cdn.jsdelivr.net/gh/rtynbirf/karta@main/banner.png" width="100%" alt="штандарт karta" />
 </div>
 
 <!--ФОРЖ:ПАСПОРТ:НАЧАЛО-->
@@ -13,7 +13,7 @@
 <!--ФОРЖ:ПАСПОРТ:КОНЕЦ-->
 
 <div align="center">
-  <img src="forge-divider.svg" width="62%" alt="делитель МАСТЕРСКАЯ КАРТ" />
+  <img src="https://cdn.jsdelivr.net/gh/rtynbirf/karta@main/forge-divider.svg" width="62%" alt="делитель МАСТЕРСКАЯ КАРТ" />
 </div>
 
 # КАРТА ВСЕЛЕННОЙ RTYNBIRF
