@@ -1,0 +1,58 @@
+# karta nightly — ночная перегенерация карты из живого API.
+# Мир: scheduled workflow + защита от silent output failure (exit 0 при нуле записей).
+# Эмерджентное: КРИТИК встроен в пайплайн — «ноль подозрителен» и «штамп обязан быть свежим».
+# Положить в: karta/.github/workflows/karta-nightly.yml
+# Секрет: KARTA_TOKEN — тонкий fine-grained read-only с датой смерти (канон ФИТИЛЬ, Приказ №6).
+name: karta nightly (перегенерация из API)
+
+on:
+  schedule:
+    # 03:21 UTC — ночная тишина, за час до смены автопилота (04:21)
+    - cron: '21 3 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Перегенерация карты (тонкий read-only токен)
+        env:
+          # тонкий ключ с датой смерти; если не задан — встроенный GITHUB_TOKEN (медленнее из-за лимитов)
+          GH_TOKEN: ${{ secrets.KARTA_TOKEN || secrets.GITHUB_TOKEN }}
+          # v3 умеет KARTA_OUT: карта пишется прямо в корень репо (иначе упала бы в ./karta)
+          KARTA_OUT: ${{ github.workspace }}
+        run: python3 scripts/gen_karta.py
+        # Генератор v3 самодостаточен: факты зеркала (MIRROR_*) — подписанные константы,
+        # путей машины не требует. Заявки CLAIMS против живого API — секция СВЕРКА.
+
+      - name: КРИТИК — штамп свежий и ноль подозрителен
+        run: |
+          TODAY=$(date -u '+%Y-%m-%d')
+          grep -q "$TODAY" README.md || { echo "КРИТИК: карта не подписана сегодняшним штампом ($TODAY)"; exit 2; }
+          grep -Eq 'репо всего\s*\*{0,2}[1-9]' README.md || { echo "КРИТИК: ноль репо — ноль подозрителен"; exit 3; }
+          echo "КРИТИК: штамп свежий, счёт ненулевой"
+
+      - name: Коммит карты
+        run: |
+          git config user.name  "karta-generator"
+          git config user.email "karta@rtynbirf.local"
+          git add README.md karta.json
+          git diff --cached --quiet || git commit -m "karta: ночная перегенерация $(date -u '+%Y-%m-%d') [REVO]"
+          git push
+
+      - name: ТРЕВОГА — ночная перегенерация упала
+        if: failure()
+        run: |
+          [ -f CRITIC-alarm.md ] || printf '# ЖУРНАЛ ТРЕВОГ СТОРОЖА\n\n| время UTC | вердикт |\n|---|---|\n' > CRITIC-alarm.md
+          printf '| %s | ночная перегенерация karta упала — см. лог прогона |\n' "$(date -u '+%Y-%m-%d %H:%M')" >> CRITIC-alarm.md
+          git config user.name  "karta-generator"
+          git config user.email "karta@rtynbirf.local"
+          git add CRITIC-alarm.md
+          git diff --cached --quiet || git commit -m "karta: тревога — ночь прошла без карты [skip ci]"
+          git push
