@@ -48,6 +48,20 @@ jobs:
           gh release view "$TAG" -R ${{ github.repository }} >/dev/null 2>&1 \
             || gh release create "$TAG" -R ${{ github.repository }} \
                  --title "ВСЕЛЕННАЯ В БАНДЛЕХ · $(date -u +%Y-%m)" \
-                 --notes "само-бэкап: git bundle --all каждого публичного репо. Восстановление: git clone <файл.bundle> <имя>. Старые месячные теги — машина времени, не удалять (канон: окаменелости это доказательства)."
-          gh release upload "$TAG" /tmp/bundles/*.bundle -R ${{ github.repository }} --clobber
+                 --notes "само-бэкап: git bundle --all каждого публичного репо. Восстановление: git clone <файл.bundle> <имя>. Файлы *.part — куски бандлов >2ГиБ (лимит вендора 2ГиБ на ассет); сборка: cat NAME.bundle.part* > NAME.bundle. Старые месячные теги — машина времени, не удалять (канон: окаменелости это доказательства)."
+          # v4.1 (урок прогона 2026-11-19): singulyar.bundle > 2ГиБ → HTTP 422,
+          # заливка умерла на нём, 66 из 76 пропали. Лечение: нарезка частей
+          # + поштучная заливка — один тяжёлый не убивает остальных.
+          for f in /tmp/bundles/*.bundle; do
+            if [ "$(stat -c%s "$f")" -ge 2147483648 ]; then
+              split -b 1900m -d "$f" "$f.part" && rm -f "$f"
+              echo "$(basename "$f"): >2ГиБ — нарезан на части"
+            fi
+          done
+          ok=0; fail=0
+          for f in /tmp/bundles/*; do
+            gh release upload "$TAG" "$f" -R ${{ github.repository }} --clobber \
+              && ok=$((ok+1)) || { fail=$((fail+1)); echo "$(basename "$f"): не залился"; }
+          done
+          echo "ассетов залито: $ok · не залилось: $fail"
           gh release view "$TAG" -R ${{ github.repository }} --json assets -q '.assets | length'
