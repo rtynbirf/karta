@@ -45,7 +45,11 @@ jobs:
           git config user.email "karta@rtynbirf.local"
           git add README.md karta.json
           git diff --cached --quiet || git commit -m "karta: ночная перегенерация $(date -u '+%Y-%m-%d') [REVO]"
-          git pull --rebase origin main || { echo "REBASE: удалённый ушёл вперёд — честная тревога, следующий прогон возьмёт свежий checkout"; exit 4; }
+          # v4.2: мирный договор двух писцов — revo[bot] штампует README на каждом
+          # своём коммите, ночная регенерация пишет свежие данные. Конфликт hunk'ов
+          # разрешается в пользу РЕГЕНА (-X ours при rebase): карта обязана быть
+          # свежее штампа; бот перештампует следующим своим тиком.
+          git pull --rebase -X ours origin main || { echo "REBASE: удалённый ушёл вперёд — честная тревога, следующий прогон возьмёт свежий checkout"; exit 4; }
           git push
 
       - name: КРИТИК-ФСМ — самопроверка генератора + пульс в git (v4)
