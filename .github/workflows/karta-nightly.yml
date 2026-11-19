@@ -44,6 +44,7 @@ jobs:
           git config user.email "karta@rtynbirf.local"
           git add README.md karta.json
           git diff --cached --quiet || git commit -m "karta: ночная перегенерация $(date -u '+%Y-%m-%d') [REVO]"
+          git pull --rebase origin main || { echo "REBASE: удалённый ушёл вперёд — честная тревога, следующий прогон возьмёт свежий checkout"; exit 4; }
           git push
 
       - name: ТРЕВОГА — ночная перегенерация упала
@@ -55,4 +56,5 @@ jobs:
           git config user.email "karta@rtynbirf.local"
           git add CRITIC-alarm.md
           git diff --cached --quiet || git commit -m "karta: тревога — ночь прошла без карты [skip ci]"
+          git pull --rebase origin main || { echo "REBASE: тревогу не удалось записать — гонка пушей"; exit 5; }
           git push
