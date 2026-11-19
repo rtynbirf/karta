@@ -1,0 +1,38 @@
+# СТОРОЖ index — ежечасный взаимный пульс органов вселенной rtynbirf.
+# Мир: dead man's switch (GitHub молчит при падении schedule-воркфлоу).
+# Эмерджентное: сторож — орган самой карты, без сторонних SaaS-виджетов (Autonomy).
+# Положить в: karta/.github/workflows/index-storozh.yml
+# Секретов не требует: вся разведка анонимно по публичной поверхности.
+name: СТОРОЖ (взаимный пульс)
+
+on:
+  schedule:
+    # :17 каждый час — вне кластера ровных часов (джиттер очередей GitHub давит ровные минуты)
+    - cron: '17 * * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write   # тревога-коммит в журнал CRITIC-alarm.md
+
+jobs:
+  pulse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: pulse
+        name: Мерить пульс органов (index ↔ karta)
+        run: python3 scripts/storozh_check.py --verdict-file alarm.txt
+
+      # Тревога = строка на витрину карты. Молчание органа становится видимым числом.
+      - name: ТРЕВОГА — строка в журнал тревог карты
+        if: failure() && steps.pulse.outcome == 'failure'
+        run: |
+          [ -f CRITIC-alarm.md ] || printf '# ЖУРНАЛ ТРЕВОГ СТОРОЖА\n\nМир: GitHub не алертит падение schedule-воркфлоу.\nПравило роя: тишина старше порога сама становится строкой на витрине.\n\n| время UTC | вердикт |\n|---|---|\n' > CRITIC-alarm.md
+          printf '| %s | %s |\n' "$(date -u '+%Y-%m-%d %H:%M')" "$(tail -n 1 alarm.txt)" >> CRITIC-alarm.md
+          git config user.name  "storozh"
+          git config user.email "storozh@rtynbirf.local"
+          git add CRITIC-alarm.md
+          git diff --cached --quiet || git commit -m "СТОРОЖ: тревога — орган молчит [skip ci]"
+          git push
