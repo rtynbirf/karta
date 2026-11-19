@@ -1,10 +1,32 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""КАРТА ВСЕЛЕННОЙ rtynbirf — самописующая.
+"""КАРТА ВСЕЛЕННОЙ rtynbirf — самописующая. v3.
 
 Правило: НИ ОДНОГО ВЫДУМАННОГО ЧИСЛА. Каждое число здесь либо пришло из
 живого API GitHub, либо посчитано из этого же файла данных. Классификация
 кластеров — детерминированные правила по имени репо, а не ручной список.
+
+CHANGELOG v2 (2026-11-16, рекогносцировка; каждый фикс — с объяснением):
+  1. СВЕРКА стала ДАННЫМИ (список CLAIMS), а не захардкоженными add().
+     Гвоздь v1: заявки аудита 15.11 (63 репо / 2939 коммитов) были вмерты
+     в код и молча устаревали. Теперь заявки — строки списка с датой и
+     источником; при новом аудите правится список, не логика.
+  2. САМОВКЛЮЧЕНИЕ решено: карта — орган вселенной, считается в территории.
+     karta помечается rec["self"]=True и кластером КАРТА·АВТОПОРТРЕТ.
+     При перегенерации из API karta входит в счёт автоматически.
+  3. Секция ЗЕРКАЛО приведена к фактам 16.11: 68 записей манифеста при
+     69 репо — дыра `.github` (dot-слепой глоб `*.git` в генераторе
+     манифеста v1 не видит скрытых каталогов). Лечение: gen_manifest.py
+     (os.scandir) с --fix. Сама карта dot-слепой не была — она API-рождена.
+  4. Выходной каталог можно переопределить: KARTA_OUT=/путь python3 ...
+
+CHANGELOG v3 (2026-11-19, смена СТОРОЖ — слияние по канону «слияние, не затирание»):
+  5. Слияние v2 + живого v1: структура v2 (SELF_NAME, CLAIMS-данные, KARTA_OUT)
+     сохранена; факты зеркала волны-15 из живого v1 (70 тел, 115 веток, 293 тегов,
+     артефакт в release-vault) восстановлены — v2 их потерял, а они новее по времени.
+  6. В реестр РИТУАЛЫ вписаны приказы №6-8: ФИТИЛЬ (гигиена ключей), СТОРОЖ
+     (взаимный пульс роя, workflows + CRITIC-alarm.md), ВЫСУШКА (drill холода).
+     Пакет smena-storozh: workflows/, scripts/storozh_check.py, fence/.gitleaks.toml.
 
 Запуск (перегенерация):
     GH_TOKEN=<тонкий read-only токен> python3 scripts/gen_karta.py [--data data.json]
@@ -15,17 +37,18 @@
 import json, os, sys, datetime, subprocess, hashlib
 
 OWNER = "rtynbirf"
+SELF_NAME = "karta"          # карта считает саму себя: решение рекогносцировки 16.11
 OUT_DEFAULT = "/home/z/my-project/download/karta"
 
 # Найдено сканом зеркал 2026-11-16 (git show HEAD:.gitattributes | grep filter=lfs).
 # Это факты, а не выдумка; при следующей генерации скан повторить.
-# Скан повторен 2026-11-16 (волна-14, 70 тел; волна-15 повторила скан по зеркалу x70): filter=lfs только у voice-atlas-llm.
 LFS_REPOS = ["voice-atlas-llm"]
 
 # Факты зеркала: первое дело — 69 тел @ 2026-11-16 (karta родилась позже и в него не попала);
 # перезеркалено волной-15 по слову Хозяина «ДЕЛАЙ КАК ХОЧЕШЬ»: 70 тел, все ветки и теги,
 # артефакт издан в сейф дома (release-vault, тег backup/zerkalo-70-2026-11-16, 11 ассетов).
 # Числа — из живого замера волны-15; при следующем росте территории отставание снова ловится в СВЕРКЕ.
+# (v3: блок возвращён из живого v1 при слиянии — v2 переписал секцию ЗЕРКАЛО статикой до волны-15.)
 MIRROR_REPOS = 70
 MIRROR_DATE = "2026-11-16"
 MIRROR_BRANCHES = 115
@@ -34,19 +57,25 @@ MIRROR_DISK_MB = 3530.4
 MIRROR_ASSET = "backup/zerkalo-70-2026-11-16"
 MIRROR_MANIFEST_SHA = "b75b69b25ea1c925df1538714af61c736e0ce2cc45426282f01010e4599f1c8c"
 
-# Заявки прошлого аудита (2026-11-15, Z.ai-переворот по master-токену).
-# Каждая проверяется ниже живыми числами. Статусы — как в lex-naturae:
+# Заявки последнего полного аудита (16.11, Z.ai-переворот по master-токену)
+# и рекогносцировки (16.11 12:54 UTC, публичная поверхность).
+# Формат: (заявка, заявлено, тип, источник). Статусы — как в lex-naturae:
 # SUPPORTED / UNKNOWN / UNVERIFIED_SUBMITTER_ASSERTION / RASSINHRON.
+# Правило: новый аудит => дописать/обновить строки ЗДЕСЬ, логика не трогается.
 CLAIMS = [
-    ("вселенной 63 репо", 63, "repos"),
-    ("2939 коммитов всего", 2939, "commits"),
-    ("2308 коммитов за ноябрь 2026", None, "unverified"),
-    ("42 полотна", None, "unverified"),
-    ("6 кластеров вселенных", 6, "clusters"),
-    ("офлайн живёт (девиз)", None, "offline"),
+    ("репо всего", 69, "repos", "аудит 16.11 (полный скоуп токена)"),
+    ("живых (не archived)", 31, "live", "аудит 16.11"),
+    ("окаменелостей (archived)", 38, "fossils", "аудит 16.11; рекогносцировка 12:54 UTC подтвердила 38"),
+    ("коммитов всего", 5374, "commits", "аудит 16.11, живой счёт; поэлементно не верифицирован"),
+    ("именованных кластеров", 9, "clusters", "аудит 16.11: 9 именованных + 5 нераздекодированных"),
+    ("2308 коммитов за ноябрь 2026", None, "unverified", "заявка 15.11 — нужна выборка по датам коммитов, ритуал СВЕРКА"),
+    ("42 полотна", None, "unverified", "заявка 15.11 — счёт по репо-экспозициям"),
+    ("офлайн живёт (девиз)", None, "offline", "зеркало волны-15 (16.11): 70 тел, все ветки и теги, издано в сейф дома release-vault (11 ассетов); дыра LFS: voice-atlas-llm"),
 ]
 
 CLUSTER_RULES = [
+    # v2: карта — первый гражданин списка, чтобы её не глотал другой кластер
+    ("КАРТА·АВТОПОРТРЕТ",        lambda n, fork: n == SELF_NAME),
     ("ФОРК",                     lambda n, fork: fork),
     ("ДОМОВОЙ",                  lambda n, fork: n.startswith("domov")),
     ("ПОЛИМАТ-УЛЕЙ",             lambda n, fork: ("polymath" in n or "polimat" in n
@@ -119,6 +148,7 @@ def normalize(raw):
         rec["cluster"] = cluster_of(name, fork)
         rec["status"] = ("ОКАМЕНЕЛОСТЬ" if archived else "ЖИВОЙ")
         rec["lfs"] = name in LFS_REPOS
+        rec["self"] = (name == SELF_NAME)   # v2: карта помечает саму себя
         out.append(rec)
     return out
 
@@ -141,39 +171,40 @@ def main():
     total_kb = sum(r["size_kb"] for r in repos)
     live_commits = sum(r["commits"] for r in live)
 
-    # --- СВЕРКА заявки против территории ---
+    # --- СВЕРКА заявки против территории (v2: данные, не хардкод) ---
     сверка = []
     def add(claim, stated, actual, status, note):
         сверка.append({"заявка": claim, "заявлено": str(stated) if stated is not None else "—",
                        "живое": str(actual), "статус": status, "примечание": note})
-    add("63 репо", 63, len(repos),
-        "RASSINHRON" if len(repos) != 63 else "SUPPORTED",
-        f"расхождение {len(repos)-63:+d}; территория растёт быстрее карты" if len(repos) != 63 else "сошлось")
-    add("2939 коммитов", 2939, total_commits,
-        "RASSINHRON" if total_commits != 2939 else "SUPPORTED",
-        f"расхождение {total_commits-2939:+d}; прошлая карта либо устарела, либо считала иначе"
-        if total_commits != 2939 else "сошлось")
-    add("2308 коммитов за ноябрь 2026", None, "не перепроверено этим прогоном",
-        "UNVERIFIED_SUBMITTER_ASSERTION", "требует выборки по датам коммитов — ритуал СВЕРКА")
-    add("42 полотна", None, "не перепроверено этим прогоном",
-        "UNVERIFIED_SUBMITTER_ASSERTION", "требуется счёт по репо-экспозициям")
-    add("6 кластеров", 6, len(named),
-        "RASSINHRON" if len(named) != 6 else "SUPPORTED",
-        f"генератор различает {len(named)} именованных кластеров + {len(undecoded)} нераздекодированных"
-        if len(named) != 6 else "сошлось")
-    add("офлайн живёт (девиз)", None,
-        f"зеркало {MIRROR_REPOS}/{len(repos)} создано {MIRROR_DATE}, sha256-манифест подписан",
-        "PARTIALLY SUPPORTED",
-        (f"копия доведена до сейфа дома (release-vault {MIRROR_ASSET}) и выжила бы смерть тела;"
-         f" SUPPORTED после вывоза хозяином на офлайн-диск (вне монокультуры вендора)"
-         + (f"; зеркало отстаёт на {len(repos)-MIRROR_REPOS} комнат(у) — появились после зеркала, перезеркалить"
-            if len(repos) != MIRROR_REPOS else "")))
+    actual_map = {"repos": len(repos), "live": len(live), "fossils": len(fossils),
+                  "commits": total_commits, "clusters": len(named)}
+    for claim, stated, kind, src in CLAIMS:
+        if kind == "unverified":
+            add(claim, stated, "не перепроверено этим прогоном",
+                "UNVERIFIED_SUBMITTER_ASSERTION", src)
+        elif kind == "offline":
+            add(claim, stated,
+                f"зеркало {MIRROR_REPOS}/{len(repos)} создано {MIRROR_DATE}, sha256-манифест подписан, артефакт в release-vault",
+                "PARTIALLY SUPPORTED",
+                src + "; SUPPORTED после вывоза хозяином на офлайн-диск (вне монокультуры вендора)"
+                + (f"; зеркало отстаёт на {len(repos)-MIRROR_REPOS} комнат(у) — перезеркалить" if len(repos) != MIRROR_REPOS else ""))
+        else:
+            a = actual_map[kind]
+            if a == 0 and stated:
+                # v3: ноль подозрителен — метод прогона счёт не измеряет, это НЕ расхождение
+                add(claim, stated, a, "UNKNOWN",
+                    f"метод этого прогона счёт не измеряет (ноль — не расхождение); {src}")
+            else:
+                ok = (a == stated)
+                add(claim, stated, a, "SUPPORTED" if ok else "RASSINHRON",
+                    src if ok else f"расхождение {a-stated:+d}; {src}")
 
     karta = {
         "generated_at": now,
         "owner": OWNER,
         "source": "api.github.com/user/repos (живые данные, тип all)",
         "rule": "ни одного выдуманного числа",
+        "self_inclusion": "карта — орган вселенной, считается в территории (решение 16.11)",
         "totals": {
             "repos": len(repos), "live": len(live), "okamenelosti": len(fossils),
             "forks": len(forks), "undecoded": len(undecoded),
@@ -190,7 +221,7 @@ def main():
     L = []
     L.append(f"# КАРТА ВСЕЛЕННОЙ {OWNER.upper()}")
     L.append("")
-    L.append(f"> сгенерировано `{now}` скриптом `scripts/gen_karta.py` из живых данных API")
+    L.append(f"> сгенерировано `{now}` скриптом `scripts/gen_karta.py` (v3) из живых данных API")
     L.append("> правило: **НИ ОДНОГО ВЫДУМАННОГО ЧИСЛА** — карта не пишется руками, карта считается")
     L.append("> карта может отставать от территории — поэтому у карты есть раздел СВЕРКА")
     L.append("")
@@ -204,9 +235,13 @@ def main():
     L.append(f"| форки (чужая кровь, не вселенная) | {len(forks)} |")
     L.append(f"| нераздекодированные (честная дыра карты) | {len(undecoded)} |")
     L.append(f"| именованные кластеры | {len(named)} |")
-    L.append(f"| коммитов всего | **{total_commits}** |")
-    L.append(f"| коммитов в живых репо | {live_commits} |")
+    commits_shown = f"**{total_commits}**" if total_commits else \
+        "ноль подозрителен: метод прогона счёт коммитов не измеряет (см. СВЕРКА)"
+    L.append(f"| коммитов всего | {commits_shown} |")
+    live_shown = f"{live_commits}" if total_commits else "— (ноль подозрителен, см. выше)"
+    L.append(f"| коммитов в живых репо | {live_shown} |")
     L.append(f"| объём вселенной | {total_kb/1024:.1f} МБ |")
+    L.append(f"| карта в счёте территории | **ДА** — «{SELF_NAME}» орган вселенной и считается (решение рекогносцировки 16.11) |")
     L.append("")
     L.append("## ЖИВЫЕ РЕПО (не archived)")
     L.append("")
@@ -214,12 +249,13 @@ def main():
     L.append("|---|---|---|---|---|")
     for r in sorted(live, key=lambda x: -x["commits"]):
         d = (r["description"] or "—").replace("|", "/")
-        L.append(f"| [{r['name']}]({r['name']}) | {r['cluster']} | {r['commits']} | {r['size_kb']} KB | {d} |")
+        mark = " ⟵ сама карта" if r.get("self") else ""
+        L.append(f"| [{r['name']}]({r['name']}){mark} | {r['cluster']} | {r['commits']} | {r['size_kb']} KB | {d} |")
     L.append("")
     L.append("## ОКАМЕНЕЛОСТИ (archived: трупы, которые помнят всё)")
     L.append("")
     L.append("Домовой не удаляет окаменелости — окаменелость это доказательство. "
-             "Из счётчика вселенной они выделены, чтобы общее число комнат не притворялось числом живых органов.")
+             "Из счётчика вселенной они выделены, чтобы «70» не притворялось числом живых органов.")
     L.append("")
     L.append("| репо | кластер | коммитов | последний пуш |")
     L.append("|---|---|---|---|")
@@ -249,7 +285,7 @@ def main():
     L.append("## ЗЕРКАЛО (первое дело 2026-11-16 · перезеркалено волной-15)")
     L.append("")
     L.append(f"- вынесено из монокультуры вендора: **{MIRROR_REPOS}/{len(repos)} репо**, полная история: {MIRROR_BRANCHES} веток, {MIRROR_TAGS} тегов")
-    L.append(f"- вес полного зеркала: {MIRROR_DISK_MB} МБ на диске (API-цифра аккаунта 1302.2 МБ — упаковка вендора; числа разные по построению, оба факты)")
+    L.append(f"- вес полного зеркала: {MIRROR_DISK_MB} МБ на диске (API-цифра аккаунта 1302.2 МБ на 16.11 — упаковка вендора; числа разные по построению, оба факты)")
     if len(repos) != MIRROR_REPOS:
         L.append(f"- зеркало отстаёт от территории на {len(repos)-MIRROR_REPOS} комнат(у): они родились после зеркала; перезеркалить по приказу Хозяина")
     L.append("- целостность: fsck чист на выборке (singulyar, lex-naturae, khozyain, cell-swarm, markitdown + новорождённая karta); реставрация стрима проверена по пайпу (71 запись)")
@@ -257,13 +293,22 @@ def main():
     L.append(f"- артефакт: релиз сейфа дома `{MIRROR_ASSET}` (release-vault): 9 частей × 420 МБ + манифест + SHA256SUMS; манифест перепрочитан из сейфа байт-в-байт")
     L.append(f"- дыра: {', '.join(LFS_REPOS)} — LFS-указатели в зеркале есть, бинарные объекты "
              "остались в LFS-хранилище вендора (git-lfs на машине генератора недоступен)")
+    L.append("- дыра первой зеркалировки (`.github`, 68 записей манифеста при 69 репо; dot-слепой глоб "
+             "`*.git` генератора v1) лечится `gen_manifest.py` (os.scandir) с `--fix`; после волны-15 "
+             "не перепроверено — статус UNVERIFIED")
+    L.append("- оставшийся шаг хозяина: вывести копию на офлайн-диск — только тогда девиз «офлайн живёт» станет SUPPORTED")
+    L.append(f"- дыра: {', '.join(LFS_REPOS)} — LFS-указатели в зеркале есть, бинарные объекты "
+             "остались в LFS-хранилище вендора (git-lfs на машине генератора недоступен)")
     L.append("- оставшийся шаг хозяина: вывести копию на офлайн-диск — только тогда девиз «офлайн живёт» станет SUPPORTED")
     L.append("")
-    L.append("## РИТУАЛЫ (приказы хозяина, Codex — specs в `rituals/`)")
+    L.append("## РИТУАЛЫ (приказы хозяина, specs в `rituals/`)")
     L.append("")
     L.append("1. `rituals/SVERKA.md` — раз в квартал внешний аудитор другого вида проверяет 10 случайных утверждений; два аудита подряд одного вида = инбридинг, отчёт недействителен")
     L.append("2. `rituals/VYZHIVANIE.md` — в январе считать % коммитов ноября, переживших квартал без переписывания: >60% — поток, <30% — штурм, темп вдвое вниз")
     L.append("3. `rituals/NOCH-BEZ-SETI.md` — раз в квартал ночь без сети в смену автопилота 04:21: рой либо живёт на локальном GGUF, либо честно записывает время своей смерти")
+    L.append("4. `rituals/ФИТИЛЬ.md` — Приказ №6: ключ = сменный пропуск (fine-grained, read-only, дата смерти ≤ 90 дней); публичное появление = кремация немедленно; реестр ключей — `keys/README.md`")
+    L.append("5. `rituals/СТОРОЖ.md` — Приказ №7: взаимный пульс роя — СТОРОЖ-workflow ежечасно меряет возраст штампов index и karta; тишина старше порога сама становится строкой в `CRITIC-alarm.md`; ноль сторонних виджетов")
+    L.append("6. `rituals/ВЫСУШКА.md` — Приказ №8: раз в квартал, в ночь без сети, 10 случайных зеркал поднимаются из холода на чистой машине; резерв не существует, пока не доказано восстановление")
     L.append("")
     L.append("## ПЕРЕГЕНЕРАЦИЯ")
     L.append("")
@@ -274,7 +319,7 @@ def main():
              "числа README против ответа API. Совпало — молчим; разошлось — тревога и новый коммит.")
     L.append("")
 
-    outdir = OUT_DEFAULT if os.path.isdir(os.path.dirname(OUT_DEFAULT)) else "./karta"
+    outdir = os.environ.get("KARTA_OUT") or (OUT_DEFAULT if os.path.isdir(os.path.dirname(OUT_DEFAULT)) else "./karta")
     os.makedirs(outdir, exist_ok=True)
     json.dump(karta, open(os.path.join(outdir, "karta.json"), "w"), ensure_ascii=False, indent=1)
     open(os.path.join(outdir, "README.md"), "w").write("\n".join(L))
