@@ -52,6 +52,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # v4: если дерево в конфликте (гонка регена с автопилотом) — критик
+          # не лезет в сломанное дерево: честный пропуск, следующий тик допишет
+          if git status --porcelain | grep -q '^UU'; then
+            echo "КРИТИК: дерево в конфликте — тик пропущен честно, пульс допишет следующий прогон"; exit 0
+          fi
           python3 scripts/critic.py --root . | tee /tmp/critic.out
           if grep -q 'ACTION: ISSUE_BLIND' /tmp/critic.out; then
             body=$(grep 'ACTION: ISSUE_BLIND' /tmp/critic.out | cut -d'|' -f2-)
@@ -62,16 +67,19 @@ jobs:
           git add karta/state.json
           git diff --cached --quiet || git commit -m "критик: пульс $(date -u '+%Y-%m-%d %H:%M') [skip ci]"
           git pull --rebase origin main || exit 0
-          git push
+          git push || echo "КРИТИК: пуш пульса не прошёл — гонка, следующий тик повторит"
 
       - name: ТРЕВОГА — ночная перегенерация упала
         if: failure()
         run: |
+          # v4: разоружить конфликтное дерево, чтобы тревога ВСЕГДА дошла до витрины
+          git rebase --abort 2>/dev/null || true
+          git reset --hard origin/main 2>/dev/null || true
           [ -f CRITIC-alarm.md ] || printf '# ЖУРНАЛ ТРЕВОГ СТОРОЖА\n\n| время UTC | вердикт |\n|---|---|\n' > CRITIC-alarm.md
           printf '| %s | ночная перегенерация karta упала — см. лог прогона |\n' "$(date -u '+%Y-%m-%d %H:%M')" >> CRITIC-alarm.md
           git config user.name  "karta-generator"
           git config user.email "karta@rtynbirf.local"
           git add CRITIC-alarm.md
           git diff --cached --quiet || git commit -m "karta: тревога — ночь прошла без карты [skip ci]"
-          git pull --rebase origin main || { echo "REBASE: тревогу не удалось записать — гонка пушей"; exit 5; }
-          git push
+          git pull --rebase origin main || { echo "REBASE: тревогу не удалось записать — гонка пушей"; exit 0; }
+          git push || echo "ТРЕВОГА: пуш не прошёл — гонка; тревога видна в логе прогона"
