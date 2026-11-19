@@ -1,0 +1,53 @@
+# ВСЕЛЕННАЯ-В-БАНДЛЕХ — ежемесячный само-бэкап (первое дело, ставшее органом).
+# Урок 2026-11-19: локальное зеркало умерло вместе с песочницей — копия на одной
+# машине = однoкопийность в другом месте. Бандл каждого репо уходит в releases
+# этого репо: ДРУГАЕ подсистема хранения вендора, переживает удаление репо,
+# компрометацию аккаунта-содержимого и порчу git-объектов.
+# Мир: 3-2-1 backup rule + git bundle (stack overflow / git docs canon).
+# Эмерджентное: бэкап собирает сам актор изнутри системы каждый месяц, без
+# внешнего оператора; старые месячные теги не перезаписываются — машина времени.
+name: вселенная-в-бандлах (само-бэкап)
+
+on:
+  schedule:
+    - cron: '43 2 1 * *'   # 1-е число месяца, 02:43 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: universe-bundle
+  cancel-in-progress: false
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Собрать бандлы всех публичных репо
+        run: |
+          mkdir -p /tmp/bundles /tmp/mirrors
+          curl -sS "https://api.github.com/users/rtynbirf/repos?per_page=100" > /tmp/repos.json
+          COUNT=$(jq length /tmp/repos.json)
+          echo "репо в живом API: $COUNT — ноль подозрителен: [ $COUNT != 0 ]"
+          [ "$COUNT" -gt 0 ] || { echo "API вернул ноль репо — не гружу пустоту"; exit 3; }
+          jq -r '.[].name' /tmp/repos.json | while read -r r; do
+            git clone -q --mirror "https://github.com/rtynbirf/$r.git" "/tmp/mirrors/$r.git" || { echo "$r: клон не удался"; continue; }
+            git -C "/tmp/mirrors/$r.git" bundle create "/tmp/bundles/$r.bundle" --all || echo "$r: бандл не удался"
+            rm -rf "/tmp/mirrors/$r.git"
+            echo "$r: бандл готов"
+          done
+          ls -la /tmp/bundles | tail -3
+
+      - name: Залить в релиз месяца
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="universe-bundle-$(date -u +%Y-%m)"
+          gh release view "$TAG" -R ${{ github.repository }} >/dev/null 2>&1 \
+            || gh release create "$TAG" -R ${{ github.repository }} \
+                 --title "ВСЕЛЕННАЯ В БАНДЛЕХ · $(date -u +%Y-%m)" \
+                 --notes "само-бэкап: git bundle --all каждого публичного репо. Восстановление: git clone <файл.bundle> <имя>. Старые месячные теги — машина времени, не удалять (канон: окаменелости это доказательства)."
+          gh release upload "$TAG" /tmp/bundles/*.bundle -R ${{ github.repository }} --clobber
+          gh release view "$TAG" -R ${{ github.repository }} --json assets -q '.assets | length'

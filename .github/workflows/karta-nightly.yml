@@ -13,6 +13,7 @@ on:
 
 permissions:
   contents: write
+  issues: write   # v4: КРИТИК-ФСМ открывает тревоги без внешних секретов
 
 jobs:
   regenerate:
@@ -45,6 +46,22 @@ jobs:
           git add README.md karta.json
           git diff --cached --quiet || git commit -m "karta: ночная перегенерация $(date -u '+%Y-%m-%d') [REVO]"
           git pull --rebase origin main || { echo "REBASE: удалённый ушёл вперёд — честная тревога, следующий прогон возьмёт свежий checkout"; exit 4; }
+          git push
+
+      - name: КРИТИК-ФСМ — самопроверка генератора + пульс в git (v4)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 scripts/critic.py --root . | tee /tmp/critic.out
+          if grep -q 'ACTION: ISSUE_BLIND' /tmp/critic.out; then
+            body=$(grep 'ACTION: ISSUE_BLIND' /tmp/critic.out | cut -d'|' -f2-)
+            gh issue create -R ${{ github.repository }} --title "ОСЛЕП: генератор после регена ≠ API" --body "$body" || true
+          fi
+          git config user.name  "karta-critic"
+          git config user.email "karta-critic@rtynbirf.local"
+          git add karta/state.json
+          git diff --cached --quiet || git commit -m "критик: пульс $(date -u '+%Y-%m-%d %H:%M') [skip ci]"
+          git pull --rebase origin main || exit 0
           git push
 
       - name: ТРЕВОГА — ночная перегенерация упала

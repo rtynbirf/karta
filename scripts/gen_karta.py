@@ -37,7 +37,7 @@ CHANGELOG v3 (2026-11-19, смена СТОРОЖ — слияние по кан
 Если --data не указан и файл /tmp/rtyn/data.json существует — берётся он,
 иначе карта тянется из API сама (нужен GH_TOKEN).
 """
-import json, os, sys, datetime, subprocess, hashlib, urllib.error, urllib.request
+import json, os, re, sys, datetime, subprocess, hashlib, urllib.error, urllib.request
 
 OWNER = "rtynbirf"
 SELF_NAME = "karta"          # карта считает саму себя: решение рекогносцировки 16.11
@@ -126,6 +126,27 @@ def _api_repos(hdr, endpoint):
         page += 1
     return repos
 
+def _count_commits(hdr, repos):
+    """v4 (смена karta-critic, 2026-11-19): счётчик коммитов. Дыра v2-v3:
+    сырые записи /repos не несут числа коммитов — карта вечно писала 0,
+    честно помечала «ноль подозрителен», но лечить не лечила.
+    Лечение: per-repo /commits?per_page=1 + rel="last" из Link-заголовка.
+    Стоимость: ~1 запрос на репо; при rate-limit остаётся 0 (честно)."""
+    counted = 0
+    for r in repos:
+        try:
+            req = urllib.request.Request(
+                f"https://api.github.com/repos/{OWNER}/{r['name']}/commits?per_page=1",
+                headers=hdr)
+            with urllib.request.urlopen(req) as resp:
+                link = resp.headers.get("Link", "")
+            m = re.findall(r'[?&]page=(\d+)>; rel="last"', link)
+            r["commits"] = int(m[0]) if m else (0 if link else 1)
+            counted += 1
+        except Exception:
+            r["commits"] = r.get("commits", 0)
+    return counted
+
 def load_data(path):
     global SOURCE_EP
     if path and os.path.exists(path):
@@ -158,6 +179,9 @@ def load_data(path):
             if e2.code not in (401, 403):
                 raise
             repos = _api_repos({"User-Agent": "karta-generator"}, f"users/{OWNER}/repos")
+    counted = _count_commits(hdr, repos)
+    if counted:
+        SOURCE_EP += f" + счёт коммитов /commits (Link): {counted} репо"
     return repos
 
 def normalize(raw):

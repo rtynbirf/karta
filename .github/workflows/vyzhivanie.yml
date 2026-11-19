@@ -1,0 +1,71 @@
+# ВЫЖИВАНИЕ — квартальный анти-DORA орган (Приказ №4, Приказы хозяина).
+# Мир (DORA) меряет скорость поставки: частоту деплоев, lead time, MTTR.
+# Эмерджентное: обратная метрика — распад СМЫСЛА. Сколько коммитов окна
+# пережили квартал без переписывания? >60% поток · 30–60% переход · <30% штурм.
+name: выживание (анти-DORA)
+
+on:
+  schedule:
+    - cron: '41 4 1 1,4,7,10 *'   # 1-е число квартальных месяцев, 04:41 UTC (после смены автопилота)
+  workflow_dispatch:
+    inputs:
+      window_start: {description: 'начало окна YYYY-MM-DD', default: ''}
+      window_end:   {description: 'конец окна YYYY-MM-DD', default: ''}
+      check_date:   {description: 'дата проверки YYYY-MM-DD', default: ''}
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: vyzhivanie
+  cancel-in-progress: false
+
+jobs:
+  survival:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Счёт выживания (клон живых репо, blob:none)
+        run: |
+          WS="${{ github.event.inputs.window_start }}"
+          WE="${{ github.event.inputs.window_end }}"
+          CD="${{ github.event.inputs.check_date }}"
+          # дефолт: окно = предыдущий календарный квартал, проверка = сегодня
+          if [ -z "$WS" ]; then
+            QEND=$(date -u -d "-$(($(date -u +%-q)-1)) quarter +1 quarter -1 month -$(date -u +%d) day" +%Y-%m-%d 2>/dev/null || date -u +%Y-%m-01)
+            WS=$(date -u -d "-3 months" +%Y-%m-01)
+            WE=$(date -u +%Y-%m-01' -1 day' 2>/dev/null || date -u +%Y-%m-01)
+            WE=$(date -u -d "$WE -1 day" +%Y-%m-%d)
+            CD=$(date -u +%Y-%m-%d)
+          fi
+          echo "окно: $WS … $WE, проверка: $CD"
+          python3 scripts/vyzhivanie.py --clone --root . \
+            --window-start "$WS" --window-end "$WE" --check-date "$CD" \
+            --label "$(date -u +%Y)-Q$(( ($(date -u +%-m) - 1) / 3 + 1 ))"
+
+      - name: Коммит отчёта
+        run: |
+          git config user.name  "karta-critic"
+          git config user.email "karta-critic@rtynbirf.local"
+          git add karta/vyzhivanie/
+          git diff --cached --quiet || git commit -m "выживание: квартальный отчёт $(date -u '+%Y-%m-%d') [REVO]"
+          git pull --rebase origin main || exit 0
+          git push
+
+      - name: ШТУРМ → тревога
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          f=$(ls karta/vyzhivanie/*.md 2>/dev/null | tail -1)
+          if [ -n "$f" ] && grep -qE 'ШТУРМ \(' "$f"; then
+            gh issue create -R ${{ github.repository }} \
+              --title "ШТУРМ: выживание коммитов <30% — темп вдвое вниз" \
+              --body "см. $f (ритуал rituals/VYZHIVANIE.md)" || true
+          fi

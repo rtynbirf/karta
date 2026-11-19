@@ -1,0 +1,50 @@
+# СВЕРКА-РОТАЦИЯ — квартальное напоминание с механическим запретом инбридинга.
+# Мир: PCAOB/SEC — аудитор-партнёр не ведёт клиента дольше 5 лет.
+# Эмерджентное: ротация не фирм, а ВИДОВ аудиторов (модель-семья ↔ человек ↔
+# холодная машина); вид — данные в git (karta/sverka/ledger.json), не договорённость.
+name: сверка-ротация (запрет инбридинга)
+
+on:
+  schedule:
+    - cron: '11 4 1 1,4,7,10 *'   # 1-е число квартальных месяцев, 04:11 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  rotate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Кто обязан аудировать
+        run: |
+          LAST=$(jq -r '.audits[-1].species // "Z.AI"' karta/sverka/ledger.json)
+          LASTDATE=$(jq -r '.audits[-1].date // "?"' karta/sverka/ledger.json)
+          NEXT=$(jq -r '.next_required // "НЕ предыдущий вид"' karta/sverka/ledger.json)
+          QN="$(date -u +%Y)-Q$(( ($(date -u +%-m) - 1) / 3 + 1 ))"
+          DEBTS=$(jq -r '.first_debts[] | "- " + .' karta/sverka/ledger.json | head -5)
+          {
+            echo "**квартал:** $QN · **последний аудитор:** $LAST ($LASTDATE)"
+            echo ""
+            echo "**этот квартал обязан быть другого вида:** $NEXT"
+            echo ""
+            echo "правило канона: два аудита подряд одного вида = инбридинг, отчёт недействителен (karta/sverka/ledger.json — данные, не договорённость)"
+            echo ""
+            echo "**неразобранные долги (UNVERIFIED_SUBMITTER_ASSERTION):**"
+            echo "$DEBTS"
+            echo ""
+            echo "процедура: rituals/SVERKA.md · статусы: канон lex-naturae · отчёт: karta/sverka/$QN.md · запись о себе: ledger.json"
+          } > /tmp/body.md
+          N=$(gh issue list -R ${{ github.repository }} --state open --search "СВЕРКА $QN in:title" --json number -q 'length' || echo 0)
+          if [ "$N" = "0" ]; then
+            gh issue create -R ${{ github.repository }} \
+              --title "СВЕРКА $QN: вид аудитора обязан смениться (последний: $LAST)" \
+              --body-file /tmp/body.md
+          else
+            gh issue comment $(gh issue list -R ${{ github.repository }} --state open --search "СВЕРКА $QN in:title" --json number -q '.[0].number') --body-file /tmp/body.md
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
