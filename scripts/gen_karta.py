@@ -27,6 +27,9 @@ CHANGELOG v3 (2026-11-19, смена СТОРОЖ — слияние по кан
   6. В реестр РИТУАЛЫ вписаны приказы №6-8: ФИТИЛЬ (гигиена ключей), СТОРОЖ
      (взаимный пульс роя, workflows + CRITIC-alarm.md), ВЫСУШКА (drill холода).
      Пакет smena-storozh: workflows/, scripts/storozh_check.py, fence/.gitleaks.toml.
+  7. (после первого ночного прогона 19.11) КРИТИК поймал ноль репо: встроенный
+     GITHUB_TOKEN — это Actions-бот, его /user/repos пуст. Фолбэк на публичную
+     поверхность /users/{OWNER}/repos с честной пометкой источника в карте.
 
 Запуск (перегенерация):
     GH_TOKEN=<тонкий read-only токен> python3 scripts/gen_karta.py [--data data.json]
@@ -34,7 +37,7 @@ CHANGELOG v3 (2026-11-19, смена СТОРОЖ — слияние по кан
 Если --data не указан и файл /tmp/rtyn/data.json существует — берётся он,
 иначе карта тянется из API сама (нужен GH_TOKEN).
 """
-import json, os, sys, datetime, subprocess, hashlib
+import json, os, sys, datetime, subprocess, hashlib, urllib.request
 
 OWNER = "rtynbirf"
 SELF_NAME = "karta"          # карта считает саму себя: решение рекогносцировки 16.11
@@ -108,26 +111,42 @@ def cluster_of(name, fork):
             pass
     return "НЕРАЗДЕКОДИРОВАН"
 
-def load_data(path):
-    if path and os.path.exists(path):
-        return json.load(open(path))
-    if os.path.exists("/tmp/rtyn/data.json"):
-        return json.load(open("/tmp/rtyn/data.json"))
-    token = os.environ.get("GH_TOKEN")
-    if not token:
-        sys.exit("нет ни файла данных, ни GH_TOKEN — картостроителю нечем жить")
-    import urllib.request
-    hdr = {"Authorization": f"Bearer {token}", "User-Agent": "karta-generator"}
+SOURCE_EP = "user/repos"   # источник последней загрузки — видно в karta.json и штампе (v3)
+
+def _api_repos(hdr, endpoint):
     repos, page = [], 1
     while True:
         req = urllib.request.Request(
-            f"https://api.github.com/user/repos?per_page=100&type=all&sort=pushed&direction=desc&page={page}",
+            f"https://api.github.com/{endpoint}?per_page=100&type=all&sort=pushed&direction=desc&page={page}",
             headers=hdr)
         chunk = json.load(urllib.request.urlopen(req))
         repos += chunk
         if len(chunk) < 100:
             break
         page += 1
+    return repos
+
+def load_data(path):
+    global SOURCE_EP
+    if path and os.path.exists(path):
+        SOURCE_EP = f"file:{path}"
+        return json.load(open(path))
+    if os.path.exists("/tmp/rtyn/data.json"):
+        SOURCE_EP = "file:/tmp/rtyn/data.json"
+        return json.load(open("/tmp/rtyn/data.json"))
+    token = os.environ.get("GH_TOKEN")
+    if not token:
+        sys.exit("нет ни файла данных, ни GH_TOKEN — картостроителю нечем жить")
+    hdr = {"Authorization": f"Bearer {token}", "User-Agent": "karta-generator"}
+    repos = _api_repos(hdr, "user/repos")
+    if not repos:
+        # v3: встроенный GITHUB_TOKEN в Actions — это бот github-actions[bot],
+        # его /user/repos пуст (ноль подозрителен). Фолбэк на публичную поверхность
+        # владельца; источник честно помечается в карте.
+        SOURCE_EP = f"users/{OWNER}/repos (публичная поверхность)"
+        repos = _api_repos(hdr, f"users/{OWNER}/repos")
+    else:
+        SOURCE_EP = "user/repos (полный скоуп токена)"
     return repos
 
 def normalize(raw):
@@ -202,7 +221,7 @@ def main():
     karta = {
         "generated_at": now,
         "owner": OWNER,
-        "source": "api.github.com/user/repos (живые данные, тип all)",
+        "source": f"api.github.com/{SOURCE_EP} (живые данные)",
         "rule": "ни одного выдуманного числа",
         "self_inclusion": "карта — орган вселенной, считается в территории (решение 16.11)",
         "totals": {
