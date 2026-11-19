@@ -37,7 +37,7 @@ CHANGELOG v3 (2026-11-19, смена СТОРОЖ — слияние по кан
 Если --data не указан и файл /tmp/rtyn/data.json существует — берётся он,
 иначе карта тянется из API сама (нужен GH_TOKEN).
 """
-import json, os, sys, datetime, subprocess, hashlib, urllib.request
+import json, os, sys, datetime, subprocess, hashlib, urllib.error, urllib.request
 
 OWNER = "rtynbirf"
 SELF_NAME = "karta"          # карта считает саму себя: решение рекогносцировки 16.11
@@ -138,15 +138,26 @@ def load_data(path):
     if not token:
         sys.exit("нет ни файла данных, ни GH_TOKEN — картостроителю нечем жить")
     hdr = {"Authorization": f"Bearer {token}", "User-Agent": "karta-generator"}
-    repos = _api_repos(hdr, "user/repos")
-    if not repos:
-        # v3: встроенный GITHUB_TOKEN в Actions — это бот github-actions[bot],
-        # его /user/repos пуст (ноль подозрителен). Фолбэк на публичную поверхность
-        # владельца; источник честно помечается в карте.
-        SOURCE_EP = f"users/{OWNER}/repos (публичная поверхность)"
-        repos = _api_repos(hdr, f"users/{OWNER}/repos")
-    else:
+    try:
+        repos = _api_repos(hdr, "user/repos")
         SOURCE_EP = "user/repos (полный скоуп токена)"
+    except urllib.error.HTTPError as e:
+        if e.code not in (401, 403, 404):
+            raise
+        # 401/403/404: токен не умеет /user/repos — в Actions встроенный
+        # GITHUB_TOKEN это бот github-actions[bot], которому тут Forbidden.
+        repos = []
+    if not repos:
+        # Фолбэк на публичную поверхность владельца: сначала с имеющимся токеном
+        # (валидный бот-токен Actions проходит), при 401/403 — анонимно
+        # (60 req/ч на IP ночи хватает). Источник честно помечается в карте.
+        SOURCE_EP = f"users/{OWNER}/repos (публичная поверхность)"
+        try:
+            repos = _api_repos(hdr, f"users/{OWNER}/repos")
+        except urllib.error.HTTPError as e2:
+            if e2.code not in (401, 403):
+                raise
+            repos = _api_repos({"User-Agent": "karta-generator"}, f"users/{OWNER}/repos")
     return repos
 
 def normalize(raw):
