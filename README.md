@@ -33,55 +33,55 @@
 
 | репо | кластер | коммитов | размер | назначение (описание API) |
 |---|---|---|---|---|
-| [markitdown](markitdown) | ФОРК | 486 | 10191 KB | MarkItDown |
-| [cell-swarm](cell-swarm) | РОЙ·ЯЧЕЙКИ | 441 | 5055 KB | РОЙ (Cell Swarm) — сингулярная эмерджентная архитектура: клетка, окно, указатели, храповик, семя |
-| [.github](.github) | АККАУНТ-ОБОЛОЧКА | 425 | 4743 KB | .github — дефолтные community health files |
-| [rtynbirf](rtynbirf) | АККАУНТ-ОБОЛОЧКА | 386 | 17651 KB | ЧЕЛОВЕК=АККАУНТ=PID1 · ПОЛИМАТ=МУЛЬТИАГЕНТ · живая кузня: рой агентов, офлайн-вселенная, ни одного стороннего виджета |
-| [H-PE11-PHOENIX](H-PE11-PHOENIX) | SINGULYAR | 356 | 17423 KB | PHOENIX-11: ворклог операций TH-* (журнал неповторимых результатов), сборки WinPE, сессии. Правила ведения — в rtynbirf/repo-doctrine. |
-| [polymath-os](polymath-os) | ПОЛИМАТ-УЛЕЙ | 334 | 7908 KB | Personal sovereign media-OS. 5-layer LFS-style self-bootstrapping repo. SINGULYAR Emergent Intent Runtime v0.6. 35 ADRs. make verify 33/33. 290 tests green. |
-| [index](index) | НЕРАЗДЕКОДИРОВАН | 296 | 1356 KB | SSOT-хаб: реестр проектов, проверенные SHA, конституция веса |
-| [repo-doctrine](repo-doctrine) | ДОКТРИНА·КАНОН | 294 | 4399 KB | Доктрина настройки GitHub-репозиториев: человеком для человека. Чек-листы флагов, защита веток, токены, конвенции агентов, аварийные процедуры, карта аккаунта. |
-| [singulyar](singulyar) | SINGULYAR | 257 | 650565 KB | СИНГУЛЯР — офлайн-вселенная караоке RUVSON: 68 песен · 197 языков (цель 200) · ОРКЕСТРАТОР ·15 · хаб + 52 двери · PWA (офлайн, без слежки) |
-| [cell65-host](cell65-host) | РОЙ·ЯЧЕЙКИ | 204 | 5156 KB | cell65-host — Антицензор (Chrome MV3): PAC/DNR/WebRTC-защита, hosts-блокировка, обход блокировок |
-| [khozyain](khozyain) | ЯДРО·ДЕКЛАРАЦИИ | 177 | 1473 KB | ХОЗЯИН ДОМА — аккаунт-уровневый автомат состояния: зелёные main, живые триггеры, ноль открытых состояний и ноль уведомлений. Слой 3 дома поверх repo-doctrine и domovoy-ritual |
-| [voice-atlas-llm](voice-atlas-llm) | АТЛАСЫ·ЭПОХИ | 168 | 167397 KB | Атлас-LLM: модель-эксперт по клонированию голоса (дизентанглмент, TTS/VC/SVC/SVS) — LoRA-обучение на корпусе атласа 2026, RAG, гейты качества |
-| [rtynbirf.github.io](rtynbirf.github.io) | АККАУНТ-ОБОЛОЧКА | 164 | 10279 KB | ЛАКОРНИЯ · MEGA-PLAYER SINGULYAR |
-| [agryp](agryp) | ЯДРО·ДЕКЛАРАЦИИ | 163 | 1231 KB | agryp — неспящий супервизор агентов уровня PID 1 |
-| [domovoy-tweaker](domovoy-tweaker) | ДОМОВОЙ | 160 | 5056 KB | ДОМОВОЙ / MEGA=TWEAKER — Windows tweaker as a state, not an event: change ledger, drift sentinel, per-feature undo, effect verification. PowerShell prototype. |
-| [ruvson-lyrics](ruvson-lyrics) | РЕВО·ЭКСПОЗИЦИИ | 153 | 39405 KB | RUVSON — тексты 65 треков: черновики, пайплайн, финальный ZIP |
-| [polymat-hive](polymat-hive) | ПОЛИМАТ-УЛЕЙ | 153 | 1057 KB | 🐝 Живой репозиторий-организм: экипаж автономных AI-агентов в GitHub Actions — Copilot, локальный GGUF-нейромозг или инстинкты. Открой issue — экипаж ответит. |
-| [combain-v2](combain-v2) | РОЙ·ЯЧЕЙКИ | 147 | 1256 KB | COMBAIN v2 — self-hosted messenger |
-| [neutral-browser](neutral-browser) | РОЙ·ЯЧЕЙКИ | 146 | 5469 KB | Neutral Browser — НЕЙТРАЛЬНЫЙ БРАУЗЕР ПОЛЬЗОВАТЕЛЯ |
-| [release-vault](release-vault) | РЕВО·ЭКСПОЗИЦИИ | 144 | 4989 KB | release-vault — Шифрованное хранилище релизных ассетов |
-| [hologram](hologram) | РОЙ·ЯЧЕЙКИ | 143 | 1629 KB | осколок знает целое: Merkle-осколки + Рид-Соломон (Целое из любых k из n), 64 репо вселенной, стратегия слоёв |
-| [karaoke-dream](karaoke-dream) | РЕВО·ЭКСПОЗИЦИИ | 132 | 38942 KB | Браузерное караоке мечты: неон, гид-вокал, оценка голоса в реальном времени и Зелёный коридор — тональность подстраивается под певца. Vanilla JS + WebAudio, zero-dependency. |
-| [revo](revo) | РЕВО·ЭКСПОЗИЦИИ | 131 | 11164 KB | REVO — автономный прототип метода Reve: layout → render |
-| [runtime-protocol](runtime-protocol) | ДОКТРИНА·КАНОН | 129 | 3791 KB | Клетка роя cell-swarm: исполнимая модель динамики узла (уравнение ρ̇, GENESIS_EXEC, VOLATILE_META, CANCER_FILTER). stdlib-only, офлайн. |
-| [edinyy-svod](edinyy-svod) | ДОКТРИНА·КАНОН | 124 | 1645 KB | ЕДИНЫЙ СВОД — Конституция Хозяина 4.2: основной закон стенда «ЕДИНЫЙ ХОЗЯИН», 98 статей, XIX глав, стенд singulyar_host v3.2. РЕВО В ОСНОВЕ ВСЕГО · REVE=РЕВО |
-| [cell-rs](cell-rs) | РОЙ·ЯЧЕЙКИ | 116 | 4309 KB | Первая Rust-клетка роя: ядро контура сверки — Tolerance/reconcile/Phase, sha256, байт-цепь. Кровь одна во всех телах. |
-| [ekspozicii](ekspozicii) | РЕВО·ЭКСПОЗИЦИИ | 108 | 14015 KB | КНИГА ЭКСПОЗИЦИЙ |
-| [ekonomika](ekonomika) | АТЛАСЫ·ЭПОХИ | 103 | 12253 KB | КНИГА ЭКОНОМИКИ |
-| [github-doctrine](github-doctrine) | ДОКТРИНА·КАНОН | 102 | 4034 KB | КНИГА ДОКТРИНЫ |
-| [free-man](free-man) | ЯДРО·ДЕКЛАРАЦИИ | 102 | 1397 KB | FREE MAN 0.2.2 — browser autonomy for Chrome MV3. 108 tracker/ads/CNAME domains blocked 100% on-device. No account, no cloud, no telemetry. |
-| [lean-canon](lean-canon) | ДОКТРИНА·КАНОН | 101 | 10455 KB | КНИГА LEAN-КАНОНА |
-| [domovoy](domovoy) | ДОМОВОЙ | 100 | 17605 KB | КНИГА ДОМОВОГО |
-| [karta](karta) ⟵ сама карта | КАРТА·АВТОПОРТРЕТ | 98 | 900 KB | КАРТА ВСЕЛЕННОЙ rtynbirf: генерируется из живых данных API, ни одного выдуманного числа. СВЕРКА = CRITIC: расхождение карты с территорией ловится, а не прячется. Ритуалы: СВЕРКА / ВЫЖИВАНИЕ / НОЧЬ-БЕЗ-СЕТИ. |
-| [polymath-core](polymath-core) | ПОЛИМАТ-УЛЕЙ | 97 | 53378 KB | КНИГА ПОЛИМАТ-ЯДРА |
-| [uace](uace) | ПОЛИМАТ-УЛЕЙ | 96 | 6537 KB | КНИГА UACE |
-| [ruvson](ruvson) | РЕВО·ЭКСПОЗИЦИИ | 95 | 13071 KB | КНИГА RUVSON |
-| [invariant-manifest](invariant-manifest) | НЕРАЗДЕКОДИРОВАН | 92 | 1015 KB | МАНИФЕСТ ИНВАРИАНТА · FORK 3 · v0.2.3 · CONDITIONAL PASS · seed 7170 · stdlib-only · порождение должно мочь быть опровергнутым |
-| [door-zero](door-zero) | ЯДРО·ДЕКЛАРАЦИИ | 77 | 874 KB | Door Zero: дверь без контента. PID 0 системы: удаление ломает boot. GET -> 204, POST/PUT -> 403 Void. |
-| [lex-naturae](lex-naturae) | ДОКТРИНА·КАНОН | 70 | 745 KB | Lex Naturae — claim/evidence ledger. Separates observations from hypotheses, philosophical principles and institutional rules. Machine-verifiable: CSV cell extraction, excerpt verification, SHA-256 artifact integrity, unit ranges, graph conflict detection. v0.7 — audited by Z.ai, 70/70 tests, BOM-tolerant. |
-| [singulyar-a0-audit](singulyar-a0-audit) | ДОКТРИНА·КАНОН | 69 | 1331 KB | SINGULYAR × A0 — independent audit (PACKAGE VALID + BRIDGE VALID) and R4 port design |
-| [code](code) | НЕРАЗДЕКОДИРОВАН | 68 | 566 KB | Код дома: скрипты и снипеты — место по канону §4 |
-| [fond-host](fond-host) | НЕРАЗДЕКОДИРОВАН | 66 | 609 KB | CORS-хост минус-фонда дома (Н-10 · ADR-0007): Pages отдаёт ACAO:* для лестницы WebAudio плееров |
-| [kb](kb) | НЕРАЗДЕКОДИРОВАН | 65 | 796 KB | Знания дома: канон-тексты, гайды, досье — место по канону §4 |
-| [assembly-protocol](assembly-protocol) | ДОКТРИНА·КАНОН | 37 | 1059 KB | Верификация через исполнение: протокол сборки v7. Двое независимых исполнителей, шесть вердиктов, ЗАПЛАТ-6. Место второго исполнителя свободно. |
-| [lfs-core](lfs-core) | НЕРАЗДЕКОДИРОВАН | 37 | 650 KB | Испытательный стенд автономного агента: цель/обязательство/пересмотр измеряются, а не декларируются. Канон v0.7 (main) + летопись v0.3→v0.7 (теги). |
-| [repo-seed](repo-seed) | НЕРАЗДЕКОДИРОВАН | 20 | 344 KB | Зерно дома: шаблон новорождённого — мембрана+CI+закон рождения (принцип №7 канона 27). Use this template → оснащённый орган. |
-| [dogovor](dogovor) | НЕРАЗДЕКОДИРОВАН | 20 | 603 KB | Договор агента: правила, которыми роя связывает себя сам. Правило = карточка 6 строк + автомат. Страж на каждый пуш. |
-| [relomat](relomat) | НЕРАЗДЕКОДИРОВАН | 4 | 200 KB | РЕЛОМАТ — канон типизированных отношений как конечный детерминированный автомат: SAME, IS-A, PART-OF, TOOL-OF, METHOD-OF, RELATED, COMPLEMENTARY, MEMBER-OF, INSTANCE, FRAMEWORK · stdlib · unittest 11/11 |
-| [global-practice-atlas](global-practice-atlas) | НЕРАЗДЕКОДИРОВАН | 4 | 882 KB | Глобальный атлас практик 2026: 1145 паспортов, двойное кодирование, канон типизированных отношений v1.2, досье трендов и эмерджентные кандидаты |
+| [markitdown](https://github.com/rtynbirf/markitdown) | ФОРК | 486 | 10191 KB | MarkItDown |
+| [cell-swarm](https://github.com/rtynbirf/cell-swarm) | РОЙ·ЯЧЕЙКИ | 441 | 5055 KB | РОЙ (Cell Swarm) — сингулярная эмерджентная архитектура: клетка, окно, указатели, храповик, семя |
+| [.github](https://github.com/rtynbirf/.github) | АККАУНТ-ОБОЛОЧКА | 425 | 4743 KB | .github — дефолтные community health files |
+| [rtynbirf](https://github.com/rtynbirf) | АККАУНТ-ОБОЛОЧКА | 386 | 17651 KB | ЧЕЛОВЕК=АККАУНТ=PID1 · ПОЛИМАТ=МУЛЬТИАГЕНТ · живая кузня: рой агентов, офлайн-вселенная, ни одного стороннего виджета |
+| [H-PE11-PHOENIX](https://github.com/rtynbirf/H-PE11-PHOENIX) | SINGULYAR | 356 | 17423 KB | PHOENIX-11: ворклог операций TH-* (журнал неповторимых результатов), сборки WinPE, сессии. Правила ведения — в rtynbirf/repo-doctrine. |
+| [polymath-os](https://github.com/rtynbirf/polymath-os) | ПОЛИМАТ-УЛЕЙ | 334 | 7908 KB | Personal sovereign media-OS. 5-layer LFS-style self-bootstrapping repo. SINGULYAR Emergent Intent Runtime v0.6. 35 ADRs. make verify 33/33. 290 tests green. |
+| [index](https://github.com/rtynbirf/index) | НЕРАЗДЕКОДИРОВАН | 296 | 1356 KB | SSOT-хаб: реестр проектов, проверенные SHA, конституция веса |
+| [repo-doctrine](https://github.com/rtynbirf/repo-doctrine) | ДОКТРИНА·КАНОН | 294 | 4399 KB | Доктрина настройки GitHub-репозиториев: человеком для человека. Чек-листы флагов, защита веток, токены, конвенции агентов, аварийные процедуры, карта аккаунта. |
+| [singulyar](https://github.com/rtynbirf/singulyar) | SINGULYAR | 257 | 650565 KB | СИНГУЛЯР — офлайн-вселенная караоке RUVSON: 68 песен · 197 языков (цель 200) · ОРКЕСТРАТОР ·15 · хаб + 52 двери · PWA (офлайн, без слежки) |
+| [cell65-host](https://github.com/rtynbirf/cell65-host) | РОЙ·ЯЧЕЙКИ | 204 | 5156 KB | cell65-host — Антицензор (Chrome MV3): PAC/DNR/WebRTC-защита, hosts-блокировка, обход блокировок |
+| [khozyain](https://github.com/rtynbirf/khozyain) | ЯДРО·ДЕКЛАРАЦИИ | 177 | 1473 KB | ХОЗЯИН ДОМА — аккаунт-уровневый автомат состояния: зелёные main, живые триггеры, ноль открытых состояний и ноль уведомлений. Слой 3 дома поверх repo-doctrine и domovoy-ritual |
+| [voice-atlas-llm](https://github.com/rtynbirf/voice-atlas-llm) | АТЛАСЫ·ЭПОХИ | 168 | 167397 KB | Атлас-LLM: модель-эксперт по клонированию голоса (дизентанглмент, TTS/VC/SVC/SVS) — LoRA-обучение на корпусе атласа 2026, RAG, гейты качества |
+| [rtynbirf.github.io](https://github.com/rtynbirf/rtynbirf.github.io) | АККАУНТ-ОБОЛОЧКА | 164 | 10279 KB | ЛАКОРНИЯ · MEGA-PLAYER SINGULYAR |
+| [agryp](https://github.com/rtynbirf/agryp) | ЯДРО·ДЕКЛАРАЦИИ | 163 | 1231 KB | agryp — неспящий супервизор агентов уровня PID 1 |
+| [domovoy-tweaker](https://github.com/rtynbirf/domovoy-tweaker) | ДОМОВОЙ | 160 | 5056 KB | ДОМОВОЙ / MEGA=TWEAKER — Windows tweaker as a state, not an event: change ledger, drift sentinel, per-feature undo, effect verification. PowerShell prototype. |
+| [ruvson-lyrics](https://github.com/rtynbirf/ruvson-lyrics) | РЕВО·ЭКСПОЗИЦИИ | 153 | 39405 KB | RUVSON — тексты 65 треков: черновики, пайплайн, финальный ZIP |
+| [polymat-hive](https://github.com/rtynbirf/polymat-hive) | ПОЛИМАТ-УЛЕЙ | 153 | 1057 KB | 🐝 Живой репозиторий-организм: экипаж автономных AI-агентов в GitHub Actions — Copilot, локальный GGUF-нейромозг или инстинкты. Открой issue — экипаж ответит. |
+| [combain-v2](https://github.com/rtynbirf/combain-v2) | РОЙ·ЯЧЕЙКИ | 147 | 1256 KB | COMBAIN v2 — self-hosted messenger |
+| [neutral-browser](https://github.com/rtynbirf/neutral-browser) | РОЙ·ЯЧЕЙКИ | 146 | 5469 KB | Neutral Browser — НЕЙТРАЛЬНЫЙ БРАУЗЕР ПОЛЬЗОВАТЕЛЯ |
+| [release-vault](https://github.com/rtynbirf/release-vault) | РЕВО·ЭКСПОЗИЦИИ | 144 | 4989 KB | release-vault — Шифрованное хранилище релизных ассетов |
+| [hologram](https://github.com/rtynbirf/hologram) | РОЙ·ЯЧЕЙКИ | 143 | 1629 KB | осколок знает целое: Merkle-осколки + Рид-Соломон (Целое из любых k из n), 64 репо вселенной, стратегия слоёв |
+| [karaoke-dream](https://github.com/rtynbirf/karaoke-dream) | РЕВО·ЭКСПОЗИЦИИ | 132 | 38942 KB | Браузерное караоке мечты: неон, гид-вокал, оценка голоса в реальном времени и Зелёный коридор — тональность подстраивается под певца. Vanilla JS + WebAudio, zero-dependency. |
+| [revo](https://github.com/rtynbirf/revo) | РЕВО·ЭКСПОЗИЦИИ | 131 | 11164 KB | REVO — автономный прототип метода Reve: layout → render |
+| [runtime-protocol](https://github.com/rtynbirf/runtime-protocol) | ДОКТРИНА·КАНОН | 129 | 3791 KB | Клетка роя cell-swarm: исполнимая модель динамики узла (уравнение ρ̇, GENESIS_EXEC, VOLATILE_META, CANCER_FILTER). stdlib-only, офлайн. |
+| [edinyy-svod](https://github.com/rtynbirf/edinyy-svod) | ДОКТРИНА·КАНОН | 124 | 1645 KB | ЕДИНЫЙ СВОД — Конституция Хозяина 4.2: основной закон стенда «ЕДИНЫЙ ХОЗЯИН», 98 статей, XIX глав, стенд singulyar_host v3.2. РЕВО В ОСНОВЕ ВСЕГО · REVE=РЕВО |
+| [cell-rs](https://github.com/rtynbirf/cell-rs) | РОЙ·ЯЧЕЙКИ | 116 | 4309 KB | Первая Rust-клетка роя: ядро контура сверки — Tolerance/reconcile/Phase, sha256, байт-цепь. Кровь одна во всех телах. |
+| [ekspozicii](https://github.com/rtynbirf/ekspozicii) | РЕВО·ЭКСПОЗИЦИИ | 108 | 14015 KB | КНИГА ЭКСПОЗИЦИЙ |
+| [ekonomika](https://github.com/rtynbirf/ekonomika) | АТЛАСЫ·ЭПОХИ | 103 | 12253 KB | КНИГА ЭКОНОМИКИ |
+| [github-doctrine](https://github.com/rtynbirf/github-doctrine) | ДОКТРИНА·КАНОН | 102 | 4034 KB | КНИГА ДОКТРИНЫ |
+| [free-man](https://github.com/rtynbirf/free-man) | ЯДРО·ДЕКЛАРАЦИИ | 102 | 1397 KB | FREE MAN 0.2.2 — browser autonomy for Chrome MV3. 108 tracker/ads/CNAME domains blocked 100% on-device. No account, no cloud, no telemetry. |
+| [lean-canon](https://github.com/rtynbirf/lean-canon) | ДОКТРИНА·КАНОН | 101 | 10455 KB | КНИГА LEAN-КАНОНА |
+| [domovoy](https://github.com/rtynbirf/domovoy) | ДОМОВОЙ | 100 | 17605 KB | КНИГА ДОМОВОГО |
+| [karta](https://github.com/rtynbirf/karta) ⟵ сама карта | КАРТА·АВТОПОРТРЕТ | 98 | 900 KB | КАРТА ВСЕЛЕННОЙ rtynbirf: генерируется из живых данных API, ни одного выдуманного числа. СВЕРКА = CRITIC: расхождение карты с территорией ловится, а не прячется. Ритуалы: СВЕРКА / ВЫЖИВАНИЕ / НОЧЬ-БЕЗ-СЕТИ. |
+| [polymath-core](https://github.com/rtynbirf/polymath-core) | ПОЛИМАТ-УЛЕЙ | 97 | 53378 KB | КНИГА ПОЛИМАТ-ЯДРА |
+| [uace](https://github.com/rtynbirf/uace) | ПОЛИМАТ-УЛЕЙ | 96 | 6537 KB | КНИГА UACE |
+| [ruvson](https://github.com/rtynbirf/ruvson) | РЕВО·ЭКСПОЗИЦИИ | 95 | 13071 KB | КНИГА RUVSON |
+| [invariant-manifest](https://github.com/rtynbirf/invariant-manifest) | НЕРАЗДЕКОДИРОВАН | 92 | 1015 KB | МАНИФЕСТ ИНВАРИАНТА · FORK 3 · v0.2.3 · CONDITIONAL PASS · seed 7170 · stdlib-only · порождение должно мочь быть опровергнутым |
+| [door-zero](https://github.com/rtynbirf/door-zero) | ЯДРО·ДЕКЛАРАЦИИ | 77 | 874 KB | Door Zero: дверь без контента. PID 0 системы: удаление ломает boot. GET -> 204, POST/PUT -> 403 Void. |
+| [lex-naturae](https://github.com/rtynbirf/lex-naturae) | ДОКТРИНА·КАНОН | 70 | 745 KB | Lex Naturae — claim/evidence ledger. Separates observations from hypotheses, philosophical principles and institutional rules. Machine-verifiable: CSV cell extraction, excerpt verification, SHA-256 artifact integrity, unit ranges, graph conflict detection. v0.7 — audited by Z.ai, 70/70 tests, BOM-tolerant. |
+| [singulyar-a0-audit](https://github.com/rtynbirf/singulyar-a0-audit) | ДОКТРИНА·КАНОН | 69 | 1331 KB | SINGULYAR × A0 — independent audit (PACKAGE VALID + BRIDGE VALID) and R4 port design |
+| [code](https://github.com/rtynbirf/code) | НЕРАЗДЕКОДИРОВАН | 68 | 566 KB | Код дома: скрипты и снипеты — место по канону §4 |
+| [fond-host](https://github.com/rtynbirf/fond-host) | НЕРАЗДЕКОДИРОВАН | 66 | 609 KB | CORS-хост минус-фонда дома (Н-10 · ADR-0007): Pages отдаёт ACAO:* для лестницы WebAudio плееров |
+| [kb](https://github.com/rtynbirf/kb) | НЕРАЗДЕКОДИРОВАН | 65 | 796 KB | Знания дома: канон-тексты, гайды, досье — место по канону §4 |
+| [assembly-protocol](https://github.com/rtynbirf/assembly-protocol) | ДОКТРИНА·КАНОН | 37 | 1059 KB | Верификация через исполнение: протокол сборки v7. Двое независимых исполнителей, шесть вердиктов, ЗАПЛАТ-6. Место второго исполнителя свободно. |
+| [lfs-core](https://github.com/rtynbirf/lfs-core) | НЕРАЗДЕКОДИРОВАН | 37 | 650 KB | Испытательный стенд автономного агента: цель/обязательство/пересмотр измеряются, а не декларируются. Канон v0.7 (main) + летопись v0.3→v0.7 (теги). |
+| [repo-seed](https://github.com/rtynbirf/repo-seed) | НЕРАЗДЕКОДИРОВАН | 20 | 344 KB | Зерно дома: шаблон новорождённого — мембрана+CI+закон рождения (принцип №7 канона 27). Use this template → оснащённый орган. |
+| [dogovor](https://github.com/rtynbirf/dogovor) | НЕРАЗДЕКОДИРОВАН | 20 | 603 KB | Договор агента: правила, которыми роя связывает себя сам. Правило = карточка 6 строк + автомат. Страж на каждый пуш. |
+| [relomat](https://github.com/rtynbirf/relomat) | НЕРАЗДЕКОДИРОВАН | 4 | 200 KB | РЕЛОМАТ — канон типизированных отношений как конечный детерминированный автомат: SAME, IS-A, PART-OF, TOOL-OF, METHOD-OF, RELATED, COMPLEMENTARY, MEMBER-OF, INSTANCE, FRAMEWORK · stdlib · unittest 11/11 |
+| [global-practice-atlas](https://github.com/rtynbirf/global-practice-atlas) | НЕРАЗДЕКОДИРОВАН | 4 | 882 KB | Глобальный атлас практик 2026: 1145 паспортов, двойное кодирование, канон типизированных отношений v1.2, досье трендов и эмерджентные кандидаты |
 
 ## ОКАМЕНЕЛОСТИ (archived: трупы, которые помнят всё)
 
