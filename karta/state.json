@@ -1,16 +1,16 @@
 {
  "state": "ОСЛЕП",
- "last_run": "2026-11-27T12:42:54Z",
+ "last_run": "2026-11-28T11:57:50Z",
  "diverged": [
-  "commits_total: 12811 → 12812"
+  "commits_total: 13885 → 13886"
  ],
- "stale_hours": 23.9,
+ "stale_hours": 23.2,
  "totals": {
-  "repos": 84,
-  "live": 83,
+  "repos": 85,
+  "live": 84,
   "okamenelosti": 1,
   "forks": 1,
-  "commits_total": 12812
+  "commits_total": 13886
  },
  "history": [
   {
@@ -81,6 +81,13 @@
    "state": "ОСЛЕП",
    "diffs": [
     "commits_total: 12811 → 12812"
+   ]
+  },
+  {
+   "t": "2026-11-28T11:57:50Z",
+   "state": "ОСЛЕП",
+   "diffs": [
+    "commits_total: 13885 → 13886"
    ]
   }
  ]
