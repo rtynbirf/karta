@@ -19,8 +19,20 @@
 
 | ФАЙЛОВ | ПАПОК | КОММИТОВ | ОБНОВЛЕНО | РЕЛИЗОВ |
 |---:|---:|---:|---|---:|
-| 61 | 15 | 191 | 2026-11-28 | 0 |
+| 61 | 13 | 1 | 2026-11-28 | 1 |
 <!--ФОРЖ:ПАСПОРТ:КОНЕЦ-->
+
+# karta
+
+<div align="center">
+
+<a href="https://github.com/rtynbirf/karta"><img src="banner.png" width="100%" alt="karta — штандарт мастерской в каноне ORNAMENTAL MYTHO-REALISM"></a>
+
+</div>
+
+
+
+
 
 # КАРТА ВСЕЛЕННОЙ RTYNBIRF
 
