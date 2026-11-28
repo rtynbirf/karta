@@ -1,3 +1,17 @@
+<div align="center">
+
+<a href="https://github.com/rtynbirf/karta"><img src="banner.png" width="100%" alt="karta — штандарт мастерской в каноне ORNAMENTAL MYTHO-REALISM"></a>
+
+</div>
+
+<!--ФОРЖ:МУЗА:НАЧАЛО-->
+<div align="center">
+  <img src="https://cdn.jsdelivr.net/gh/rtynbirf/karta@main/repo-muse.svg" width="100%" alt="Муза karta: мастерская КУЗНЯ ПОЛИМАТ, кузня ПОЛИМАТ, раунд 12 · REVE=РЕВО" />
+  <br/>
+  <img src="https://cdn.jsdelivr.net/gh/rtynbirf/karta@main/forge-divider.svg" width="62%" alt="делитель мастерской КУЗНЯ ПОЛИМАТ" />
+</div>
+<!--ФОРЖ:МУЗА:КОНЕЦ-->
+
 <!--ФОРЖ:ПАСПОРТ:НАЧАЛО-->
 <div align="center">
   <img src="revo-page.svg" width="100%" alt="РЕВО-паспорт страницы karta в каноне ORNAMENTAL MYTHO-REALISM: орнаментальная решётка, медальон-миф, строение файлов, лексикон — по фактическому контенту" />
@@ -5,10 +19,12 @@
 
 | ФАЙЛОВ | ПАПОК | КОММИТОВ | ОБНОВЛЕНО | РЕЛИЗОВ |
 |---:|---:|---:|---|---:|
-| 60 | 15 | 189 | 2026-11-28 | 0 |
+| 60 | 13 | 1 | 2026-11-28 | 1 |
 <!--ФОРЖ:ПАСПОРТ:КОНЕЦ-->
 
 # КАРТА ВСЕЛЕННОЙ RTYNBIRF
+
+<p align="center"><img src="https://cdn.jsdelivr.net/gh/rtynbirf/karta@main/.github/social-preview.png" alt="karta" width="100%"></p>
 
 > сгенерировано `2026-11-27T12:42:52Z` скриптом `scripts/gen_karta.py` (v3) из живых данных API
 > правило: **НИ ОДНОГО ВЫДУМАННОГО ЧИСЛА** — карта не пишется руками, карта считается
@@ -182,3 +198,5 @@
 GH_TOKEN=<тонкий read-only токен с датой смерти> python3 scripts/gen_karta.py
 ```
 Карта обязана расходиться с территорией — расхождение ловится CRITIC-шагом: числа README против ответа API. Совпало — молчим; разошлось — тревога и новый коммит.
+
+<!--ФОРЖ:ПОДВАЛ-->
